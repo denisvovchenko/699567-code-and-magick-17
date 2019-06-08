@@ -24,7 +24,7 @@ STAT.shadow = {
 
 STAT.textDimensions = {
   x: STAT.dimensions.x + 20,
-  y: STAT.dimensions.y + 40,
+  y: STAT.dimensions.y + 30,
 };
 
 var TEXT_STYLES = {
@@ -38,7 +38,7 @@ var SUCCESS_TEXT_STRINGS = ['Ура вы победили!', 'Список ре�
 var GIST = {
   dimensions: {
     x: 140,
-    y: STAT.dimensions.y + 115,
+    y: STAT.dimensions.y + 90,
     height: 150,
   },
 
@@ -58,17 +58,19 @@ window.renderStatistics = function (ctx, names, times) {
   writeSuccessText(ctx);
 
   var highestTime = getHighestTime(times);
+  var columnCoordX = GIST.columnDimensions.x;
 
   for (var i = 0; i < names.length; i++) {
     var columnProps = {
       name: names[i],
       time: Math.round(times[i]),
       highestTime: highestTime,
+      coordX: columnCoordX,
     };
 
     paintColumn(ctx, columnProps);
 
-    GIST.columnDimensions.x += GIST.columnDimensions.width + GIST.gap;
+    columnCoordX += GIST.columnDimensions.width + GIST.gap;
   }
 };
 
@@ -84,8 +86,10 @@ function writeSuccessText(ctx) {
   ctx.fillStyle = TEXT_STYLES.color;
   ctx.font = TEXT_STYLES.font;
 
-  for (var i = 0; i < SUCCESS_TEXT_STRINGS.length; i++, STAT.textDimensions.y += TEXT_STYLES.lineHeight) {
-    ctx.fillText(SUCCESS_TEXT_STRINGS[i], STAT.textDimensions.x, STAT.textDimensions.y);
+  var textCoordsY = STAT.textDimensions.y;
+
+  for (var i = 0; i < SUCCESS_TEXT_STRINGS.length; i++, textCoordsY += TEXT_STYLES.lineHeight) {
+    ctx.fillText(SUCCESS_TEXT_STRINGS[i], STAT.textDimensions.x, textCoordsY);
   }
 }
 
@@ -118,17 +122,18 @@ function paintColumn(ctx, props) {
   var time = props.time;
   var name = props.name;
   var highestTime = props.highestTime;
+  var columnCoordX = props.coordX;
 
   ctx.fillStyle = getColumnColor(name);
 
   setColumnVerticalDimensions(highestTime, time);
 
-  ctx.fillRect(GIST.columnDimensions.x, GIST.columnDimensions.y, GIST.columnDimensions.width, GIST.columnDimensions.height);
+  ctx.fillRect(columnCoordX, GIST.columnDimensions.y, GIST.columnDimensions.width, GIST.columnDimensions.height);
 
   var timeCoordY = GIST.columnDimensions.y - GIST.timeMarginBottom;
   var nameCoordY = GIST.dimensions.y + GIST.dimensions.height + GIST.nameMarginTop;
 
   ctx.fillStyle = TEXT_STYLES.color;
-  ctx.fillText(time, GIST.columnDimensions.x, timeCoordY);
-  ctx.fillText(name, GIST.columnDimensions.x, nameCoordY);
+  ctx.fillText(time, columnCoordX, timeCoordY);
+  ctx.fillText(name, columnCoordX, nameCoordY);
 }

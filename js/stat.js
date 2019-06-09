@@ -11,7 +11,7 @@ var STAT = {
   background: '#ffffff',
 };
 
-STAT.shadow = {
+var STAT_SHADOW = {
   dimensions: {
     x: STAT.dimensions.x + 10,
     y: STAT.dimensions.y + 10,
@@ -22,7 +22,7 @@ STAT.shadow = {
   background: 'rgba(0, 0, 0, 0.7)',
 };
 
-STAT.textDimensions = {
+var STAT_TEXT_DIMENSIONS = {
   x: STAT.dimensions.x + 20,
   y: STAT.dimensions.y + 30,
 };
@@ -75,8 +75,8 @@ window.renderStatistics = function (ctx, names, times) {
 };
 
 function paintStatWindow(ctx) {
-  ctx.fillStyle = STAT.shadow.background;
-  ctx.fillRect(STAT.shadow.dimensions.x, STAT.shadow.dimensions.y, STAT.shadow.dimensions.width, STAT.shadow.dimensions.height);
+  ctx.fillStyle = STAT_SHADOW.background;
+  ctx.fillRect(STAT_SHADOW.dimensions.x, STAT_SHADOW.dimensions.y, STAT_SHADOW.dimensions.width, STAT_SHADOW.dimensions.height);
 
   ctx.fillStyle = STAT.background;
   ctx.fillRect(STAT.dimensions.x, STAT.dimensions.y, STAT.dimensions.width, STAT.dimensions.height);
@@ -86,10 +86,10 @@ function writeSuccessText(ctx) {
   ctx.fillStyle = TEXT_STYLES.color;
   ctx.font = TEXT_STYLES.font;
 
-  var textCoordsY = STAT.textDimensions.y;
+  var textCoordsY = STAT_TEXT_DIMENSIONS.y;
 
   for (var i = 0; i < SUCCESS_TEXT_STRINGS.length; i++, textCoordsY += TEXT_STYLES.lineHeight) {
-    ctx.fillText(SUCCESS_TEXT_STRINGS[i], STAT.textDimensions.x, textCoordsY);
+    ctx.fillText(SUCCESS_TEXT_STRINGS[i], STAT_TEXT_DIMENSIONS.x, textCoordsY);
   }
 }
 

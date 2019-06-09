@@ -47,7 +47,7 @@ var GIST = {
   nameMarginTop: 20,
 };
 
-GIST.columnDimensions = {
+var GIST_COLUMN_DIMENSIONS = {
   x: GIST.dimensions.x,
   width: 40,
 };
@@ -58,7 +58,7 @@ window.renderStatistics = function (ctx, names, times) {
   writeSuccessText(ctx);
 
   var highestTime = getHighestTime(times);
-  var columnCoordX = GIST.columnDimensions.x;
+  var columnCoordX = GIST_COLUMN_DIMENSIONS.x;
 
   for (var i = 0; i < names.length; i++) {
     var columnProps = {
@@ -70,7 +70,7 @@ window.renderStatistics = function (ctx, names, times) {
 
     paintColumn(ctx, columnProps);
 
-    columnCoordX += GIST.columnDimensions.width + GIST.gap;
+    columnCoordX += GIST_COLUMN_DIMENSIONS.width + GIST.gap;
   }
 };
 
@@ -114,8 +114,8 @@ function getColumnColor(name) {
 }
 
 function setColumnVerticalDimensions(highestTime, time) {
-  GIST.columnDimensions.height = Math.round(GIST.dimensions.height / highestTime * time);
-  GIST.columnDimensions.y = GIST.dimensions.y + GIST.dimensions.height - GIST.columnDimensions.height;
+  GIST_COLUMN_DIMENSIONS.height = Math.round(GIST.dimensions.height / highestTime * time);
+  GIST_COLUMN_DIMENSIONS.y = GIST.dimensions.y + GIST.dimensions.height - GIST_COLUMN_DIMENSIONS.height;
 }
 
 function paintColumn(ctx, props) {
@@ -128,9 +128,9 @@ function paintColumn(ctx, props) {
 
   setColumnVerticalDimensions(highestTime, time);
 
-  ctx.fillRect(columnCoordX, GIST.columnDimensions.y, GIST.columnDimensions.width, GIST.columnDimensions.height);
+  ctx.fillRect(columnCoordX, GIST_COLUMN_DIMENSIONS.y, GIST_COLUMN_DIMENSIONS.width, GIST_COLUMN_DIMENSIONS.height);
 
-  var timeCoordY = GIST.columnDimensions.y - GIST.timeMarginBottom;
+  var timeCoordY = GIST_COLUMN_DIMENSIONS.y - GIST.timeMarginBottom;
   var nameCoordY = GIST.dimensions.y + GIST.dimensions.height + GIST.nameMarginTop;
 
   ctx.fillStyle = TEXT_STYLES.color;

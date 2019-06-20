@@ -1,11 +1,5 @@
 'use strict';
 
-function showCharacterWindow() {
-  var characterWindow = document.querySelector('.setup');
-
-  characterWindow.classList.remove('hidden');
-}
-
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -56,6 +50,54 @@ function renderSimilarCharacters() {
   similarWizardsBlock.classList.remove('hidden');
 }
 
+function makeElementFocusable(element) {
+  element.setAttribute('tabindex', '0');
+}
+
+function onEscKeyDown(evt) {
+  if (evt.keyCode === 27) {
+    characterPopup.close();
+  }
+}
+
+function setCharacterWindowOpening() {
+  characterPopup.openBtn.addEventListener('click', function () {
+    characterPopup.open();
+
+    document.addEventListener('keydown', onEscKeyDown);
+  });
+
+  characterPopup.openBtnIcon.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 13) {
+      characterPopup.open();
+
+      document.addEventListener('keydown', onEscKeyDown);
+    }
+  });
+
+  characterPopup.closeBtn.addEventListener('click', characterPopup.close);
+}
+
+function CharacterPopup() {
+  this.window = document.querySelector('.setup');
+  this.openBtn = document.querySelector('.setup-open');
+  this.openBtnIcon = this.openBtn.querySelector('.setup-open-icon');
+  this.closeBtn = this.window.querySelector('.setup-close');
+  this.nameInput = this.window.querySelector('.setup-user-name');
+
+  var self = this;
+
+  this.open = function () {
+    self.window.classList.remove('hidden');
+  };
+
+  this.close = function () {
+    self.window.classList.add('hidden');
+
+    document.removeEventListener('keydown', onEscKeyDown);
+  };
+}
+
 // variables and constants
 
 var CHARACTERS_LENGTH = 4;
@@ -64,8 +106,12 @@ var CHARACTERS_SURNAMES = ['да Марья', 'Верон', 'Мирабелла'
 var CHARACTERS_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var CHARACTERS_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 
+var characterPopup = new CharacterPopup();
+
 //
 
-showCharacterWindow();
+makeElementFocusable(characterPopup.openBtnIcon);
+
+setCharacterWindowOpening();
 
 renderSimilarCharacters();
